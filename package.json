@@ -1,0 +1,22 @@
+{
+  "name": "pr-docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.13.2",
+    "dotenv": "17.0.0",
+    "octokit": "5.0.3",
+    "zod": "3.25.67"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.7"
+  }
+}
