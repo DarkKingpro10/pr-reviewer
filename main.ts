@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import fetchPR from "./githubIntegration";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { createNotionPage } from "./notionIntegration";
 
 // 1. Crear el servidor
 const server = new McpServer({
@@ -50,6 +51,48 @@ server.registerTool(
 						type: "text",
 						role: "tool",
 						text: `❌ Error al obtener la Pull Request ${
+							(error as Error).message
+						}`,
+					},
+				],
+			};
+		}
+	}
+);
+
+server.registerTool(
+	"create-notion-page",
+	{
+		title: "Create Notion Page",
+		description: "Create a Notion Page",
+		inputSchema: {
+			title: z.string().describe("Title of the page"),
+			content: z.string().describe("Content of the page"),
+		},
+	},
+	async ({ title, content }) => {
+		try {
+			const page = await createNotionPage(title, content);
+			return {
+				content: [
+					{
+						type: "text",
+						role: "tool",
+						text: `✅ Notion Page created: ${title}`,
+					},
+					{
+						type: "text",
+						text: `New page created: ${JSON.stringify(page)}`,
+					},
+				],
+			};
+		} catch (error) {
+			return {
+				content: [
+					{
+						type: "text",
+						role: "tool",
+						text: `❌ Error al crear la Notion Page ${
 							(error as Error).message
 						}`,
 					},
